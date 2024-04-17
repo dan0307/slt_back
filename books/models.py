@@ -10,13 +10,15 @@ from django.contrib.auth.models import User
 
 class Book(models.Model):
     id = models.AutoField(primary_key=True)
+    book_id = models.IntegerField(unique=False)
     title = models.CharField(max_length=255)
     content = models.TextField()
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default = 1);
+    user_id = models.IntegerField(unique=False)
 
     def __str__(self):
         return self.title
-
+    class Meta:
+        unique_together = ('user_id', 'book_id')
     
 class BookProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
