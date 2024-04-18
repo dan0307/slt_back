@@ -74,7 +74,6 @@ def get_progress(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
 @api_view(['POST'])
 def user_started_books(request):
     if request.method == 'POST':
@@ -85,8 +84,8 @@ def user_started_books(request):
             if user_id is None:
                 return JsonResponse({'error': 'User ID is required'}, status=400)
 
-            # Query the BookProgress model for books the user has started (progress > 0)
-            started_books = BookProgress.objects.filter(user_id=user_id, progress__gt=0).values_list('book_id', flat=True)
+            # Query the Book model for books the user has started
+            started_books = Book.objects.filter(user_id=user_id).values_list('book_id', flat=True)
 
             # Return the list of book IDs as a JSON response
             return JsonResponse({'started_books': list(started_books)}, status=200)
